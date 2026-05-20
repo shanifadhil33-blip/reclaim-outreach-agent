@@ -1,0 +1,12 @@
+# Secrets — NEVER commit this. Config in the cloud comes from GitHub Secrets.
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Local-only logs
+runs.log
+
+# NOTE: outreach.db and leads.csv ARE committed on purpose —
+# outreach.db is the agent's memory, leads.csv is its input.

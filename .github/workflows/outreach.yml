@@ -1,0 +1,60 @@
+name: Reclaim Outreach Agent
+
+# Fires every 15 minutes during the US-morning send window, Mon-Fri.
+# cron is in UTC (GitHub's clock): 12:00 UTC = 8 AM US Eastern = 4 PM Arabian.
+# The DAILY_CAP stops sending once the day's quota is met, so later ticks
+# in the window simply do nothing.
+on:
+  schedule:
+    - cron: '*/15 12-18 * * 1-5'
+  workflow_dispatch: {}        # also lets you run it by hand from the Actions tab
+
+# Never let two ticks run at the same time.
+concurrency:
+  group: outreach-agent
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # required to commit outreach.db (the state file) back
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send one outreach tick
+        env:
+          DRY_RUN:            ${{ vars.DRY_RUN }}
+          DAILY_CAP:          ${{ vars.DAILY_CAP }}
+          BATCH_SIZE:         ${{ vars.BATCH_SIZE }}
+          SENDER_NAME:        ${{ vars.SENDER_NAME }}
+          SENDER_COMPANY:     ${{ vars.SENDER_COMPANY }}
+          SENDER_EMAIL:       ${{ vars.SENDER_EMAIL }}
+          REPLY_TO_EMAIL:     ${{ vars.REPLY_TO_EMAIL }}
+          SENDER_ADDRESS:     ${{ vars.SENDER_ADDRESS }}
+          UNSUBSCRIBE_URL:    ${{ vars.UNSUBSCRIBE_URL }}
+          APP_URL:            ${{ vars.APP_URL }}
+          MAILERSEND_API_KEY: ${{ secrets.MAILERSEND_API_KEY }}
+        run: python main.py
+
+      - name: Save state back to the repo
+        if: always()           # commit even if the send step errored partway through
+        run: |
+          if [ -f outreach.db ]; then
+            git config user.name  "outreach-agent"
+            git config user.email "actions@users.noreply.github.com"
+            git add outreach.db
+            if ! git diff --staged --quiet; then
+              git commit -m "state: outreach tick $(date -u +%Y-%m-%dT%H:%MZ)"
+              git push
+            fi
+          fi
