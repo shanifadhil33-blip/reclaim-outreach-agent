@@ -60,14 +60,11 @@ Hi {first_name},
 
 {icebreaker}
 
-Most solo billers lose 10-15 hours a month manually hunting denied
-claims through 50-page faxed EOBs - the worst part of the job.
+Reclaim fixes exactly that: drop in the EOB PDF and it pulls every
+denial into a clean table, then writes the appeal letters for you
+as ready-to-send Word docs.
 
-Reclaim does only that: drop in the EOB PDF, and it pulls every
-denial into a clean table and writes the appeal letters for you as
-ready-to-send Word docs.
-
-Free for 14 days - try it on your next EOB here:
+Free for 14 days - try it on your next EOB:
 {app_url}
 
 Best,

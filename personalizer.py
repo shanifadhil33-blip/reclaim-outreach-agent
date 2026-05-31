@@ -15,15 +15,16 @@ controlling how the opener and subject read.
 import hashlib
 
 
-# --- Icebreaker: the personalized opening sentence ---------------------------
-# Placeholders: {company}, {position}. Each states something relatable and
-# true for a solo biller — never a specific result or fact we didn't scrape.
+# --- Opening line: a personalized statement of the core problem --------------
+# The email leads with the prospect's pain. Placeholders: {company}, {position}.
+# Each variant states the EOB-denial problem and is true for any solo biller —
+# never a specific result or fact we didn't scrape.
 ICEBREAKER_VARIANTS = [
-    "Running {company} as a {position} means every claim ultimately lands on your desk.",
-    "Handling {company} on your own as a {position}, your time is pretty much the whole business.",
-    "Most independent billers I talk to are stretched thin, and I'd guess {company} keeps you just as busy.",
-    "Keeping {company} going single-handed is a real grind for any {position}.",
-    "As a {position}, you're the biller, the follow-up chaser, and the admin for {company} all at once.",
+    "Running {company} as a {position}, you've probably lost whole afternoons hunting denied claims through 50-page faxed EOBs.",
+    "At {company}, the manual EOB denial hunt likely eats 10-15 hours of your month - time you can't bill for.",
+    "As a {position}, a real chunk of your week probably disappears into reading faxed EOBs just to find the denied claims.",
+    "Digging denied claims out of 50-page faxed EOBs by hand is probably one of the worst parts of running {company}.",
+    "Reading faxed EOBs line by line to catch every denial is slow, draining work - and at {company} it's likely on you alone.",
 ]
 
 # --- Subject line ------------------------------------------------------------
