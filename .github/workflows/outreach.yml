@@ -5,9 +5,15 @@ name: Reclaim Outreach Agent
 # The DAILY_CAP stops sending once the day's quota is met, so later ticks
 # in the window simply do nothing.
 on:
-  schedule:
-    - cron: '*/15 12-18 * * 1-5'
-  workflow_dispatch: {}        # also lets you run it by hand from the Actions tab
+  # Scheduled runs are intentionally disabled in this PUBLIC repo. The design
+  # commits outreach.db (which logs every prospect contacted) back to the repo
+  # for state — running the schedule here would expose prospect data publicly.
+  # Re-enable the cron only after migrating outreach.db + leads.csv to private
+  # storage (e.g. Cloudflare R2). See SETUP.md.
+  #
+  # schedule:
+  #   - cron: '*/15 12-18 * * 1-5'
+  workflow_dispatch: {}        # manual trigger only — safe on a public repo
 
 # Never let two ticks run at the same time.
 concurrency:
